@@ -15,7 +15,20 @@ return {
       require "configs.lint"
     end,
   },
-
+  {
+    "qrutyy/checkpatch.nvim",
+    -- or: dir = "/absolute/path/to/checkpatch.nvim" for a local checkout
+    ft = { "c" },
+    cmd = { "Checkpatch" },
+    opts = {
+      -- you can override default keymaps here
+      -- mappings = { run = { keys = "<leader>cp" }, next = { keys = "," }, prev = { keys = "<" } }
+    },
+    config = function(_, opts)
+      require("plugins.checkpatch").setup(opts)
+    end,
+  },
+  
   {
     "neovim/nvim-lspconfig",
     config = function()
