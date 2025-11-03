@@ -32,3 +32,5 @@ map("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
 -- YAML schema selection
 map("n", "<leader>ys", "<cmd>Telescope yaml_schema<cr>", { desc = "YAML schema" })
 
+map('n', '<leader>gb', ':GitBlameToggle<CR>', { noremap = true, silent = true })
+

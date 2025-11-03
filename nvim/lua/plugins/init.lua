@@ -28,7 +28,23 @@ return {
       require("plugins.checkpatch").setup(opts)
     end,
   },
-  
+  {
+    "f-person/git-blame.nvim",
+    event = "VeryLazy",
+    config = function()
+	-- включить сразу при старте
+	vim.g.gitblame_enabled = 1
+
+	-- шаблон сообщения
+	vim.g.gitblame_message_template = " <summary> • <date> • <author> • <<sha>>"
+
+	-- формат даты
+	vim.g.gitblame_date_format = "%m-%d-%Y %H:%M:%S"
+
+	-- колонка для виртуального текста (1 = сразу после кода)
+	vim.g.gitblame_virtual_text_column = 1
+    end,
+  },  
   {
     "neovim/nvim-lspconfig",
     config = function()
