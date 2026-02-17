@@ -13,4 +13,3 @@ vim.o.smarttab = true
 -- vim.o.number = true
 
 require "nvchad.options"
-

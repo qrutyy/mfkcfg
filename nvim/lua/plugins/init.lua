@@ -7,28 +7,20 @@ return {
       require "configs.conform"
     end,
   },
-
-  {
-    "mfussenegger/nvim-lint",
-    event = { "BufReadPre", "BufNewFile" },
-    config = function()
-      require "configs.lint"
-    end,
+{
+  "qrutyy/checkpatch.nvim",
+  -- or: dir = "/absolute/path/to/checkpatch.nvim" for a local checkout
+  ft = { "c" },
+  cmd = { "Checkpatch" },
+  opts = {
+    -- you can override default keymaps here
+    -- mappings = { run = { keys = "<leader>cp" }, next = { keys = "]m" }, prev = { keys = "[m" } }
   },
-  {
-    "qrutyy/checkpatch.nvim",
-    -- or: dir = "/absolute/path/to/checkpatch.nvim" for a local checkout
-    ft = { "c" },
-    cmd = { "Checkpatch" },
-    opts = {
-      -- you can override default keymaps here
-      -- mappings = { run = { keys = "<leader>cp" }, next = { keys = "," }, prev = { keys = "<" } }
-    },
-    config = function(_, opts)
-      require("plugins.checkpatch").setup(opts)
-    end,
-  },
-  {
+  config = function(_, opts)
+    require("plugins.checkpatch").setup(opts)
+  end,
+},
+ {
     "f-person/git-blame.nvim",
     event = "VeryLazy",
     config = function()
@@ -44,7 +36,15 @@ return {
 	-- колонка для виртуального текста (1 = сразу после кода)
 	vim.g.gitblame_virtual_text_column = 1
     end,
-  },  
+  },
+  {
+    "mfussenegger/nvim-lint",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      require "configs.lint"
+    end,
+  },
+
   {
     "neovim/nvim-lspconfig",
     config = function()
@@ -91,7 +91,7 @@ return {
     "linux-cultist/venv-selector.nvim",
     ft = { "python" },
     dependencies = {
-      "neovim/nvim-lspconfig", 
+      "neovim/nvim-lspconfig",
       "nvim-telescope/telescope.nvim",
       "mfussenegger/nvim-dap-python"
     },
@@ -119,13 +119,13 @@ return {
         "kotlin-language-server",
         "sourcekit-lsp",  -- Swift LSP
         "pyright",  -- Python LSP
-        
+
         -- Formatters
         "stylua",
         "prettier",
         "shfmt",  -- Shell formatter
         "black",   -- Python formatter
-        
+
         -- Linters
         "shellcheck",
         "hadolint",  -- Dockerfile linter

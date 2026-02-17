@@ -1,6 +1,8 @@
 -- ~/.config/nvim/lua/mappings.lua
 require "nvchad.mappings"
 
+local telescope = require("telescope.builtin")
+
 local map = vim.keymap.set
 
 -- Форматирование
@@ -31,6 +33,55 @@ map("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
 
 -- YAML schema selection
 map("n", "<leader>ys", "<cmd>Telescope yaml_schema<cr>", { desc = "YAML schema" })
-
 map('n', '<leader>gb', ':GitBlameToggle<CR>', { noremap = true, silent = true })
 
+-- LSP-based definitions
+vim.keymap.set("n", "<leader>fd", telescope.lsp_definitions, { desc = "LSP Definitions" })
+
+-- LSP-based implementations
+vim.keymap.set("n", "<leader>fi", telescope.lsp_implementations, { desc = "LSP Implementations" })
+
+-- LSP document symbols
+vim.keymap.set("n", "<leader>fs", telescope.lsp_document_symbols, { desc = "LSP Symbols" })
+
+map("n", "gr", function()
+  require("telescope.builtin").lsp_references({
+    show_line = false,
+    include_declaration = false,
+  })
+end, { desc = "LSP References in Telescope" })
+
+map("n", "gR", function()
+  local word = vim.fn.expand("<cword>")
+  require("telescope.builtin").grep_string({
+    search = word,
+    prompt_title = "Ripgrep references: " .. word,
+    glob_pattern = { "*.c", "*.h" },
+    search_dirs = {
+      vim.fn.getcwd(),
+      "/usr/src/linux-headers-" .. vim.fn.system("uname -r"):gsub("\n", ""),
+      "/Users/qrutyy/uni/prog/linux/linux-6.18/",
+    }
+  })
+end, { desc = "RG References (fallback)" })
+---------------------------------------------------------------------
+vim.keymap.set("n", "<leader>fk", function()
+  telescope.live_grep({
+    prompt_title = "Linux kernel search",
+    search_dirs = { "/Users/qrutyy/uni/prog/linux/linux-6.18/" },
+    path_display = { "smart" },
+    glob_pattern = { "*.c", "*.h", "Makefile", "Kconfig" },
+  })
+end, { desc = "Search in Linux kernel sources" })
+
+map("n", "<leader>gk", function()
+  local word = vim.fn.expand("<cword>")
+  require("telescope.builtin").grep_string({
+    search = word,
+    prompt_title = "Kernel Definition Search: " .. word,
+    search_dirs = { "/Users/qrutyy/uni/prog/linux/linux-6.18/" },
+    path_display = { "smart" },
+    -- Опционально: искать только в .c и .h
+    glob_pattern = { "*.c", "*.h" },
+  })
+end, { desc = "Search definition in Kernel (Grep)" })
