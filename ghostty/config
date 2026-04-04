@@ -1,0 +1,21 @@
+# Перенаправляем Cmd+клавиша в последовательность Alt+клавиша для tmux
+keybind = super+d=text:\x1bd
+keybind = super+shift+d=text:\x1bD
+keybind = super+t=text:\x1bt
+keybind = super+w=text:\x1bw
+keybind = super+s=text:\x1bs
+
+# Переключение окон (Cmd + 1, 2, 3...)
+keybind = super+1=text:\x1b1
+keybind = super+2=text:\x1b2
+keybind = super+3=text:\x1b3
+keybind = super+4=text:\x1b4
+keybind = super+5=text:\x1b5
+
+# Навигация (если хотите Cmd + HJKL)
+keybind = super+h=text:\x1bh
+keybind = super+j=text:\x1bj
+keybind = super+k=text:\x1bk
+keybind = super+l=text:\x1bl
+
+theme = light:catppuccin-latte,dark:catppuccin-mocha
