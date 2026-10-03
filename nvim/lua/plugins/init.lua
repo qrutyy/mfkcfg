@@ -1,10 +1,14 @@
+
 -- ~/.config/nvim/lua/plugins/init.lua
 return {
   {
     "stevearc/conform.nvim",
-    event = 'BufWritePre',
-    config = function()
-      require "configs.conform"
+    event = "BufWritePre",
+    -- Было config = function() require "configs.conform" end: модуль
+    -- подгружался, но conform.setup() никто не звал, и format_on_save
+    -- не работал ни для одного языка. opts отдаёт таблицу в setup.
+    opts = function()
+      return require "configs.conform"
     end,
   },
 {
@@ -20,28 +24,20 @@ return {
     require("plugins.checkpatch").setup(opts)
   end,
 },
- {
-    "f-person/git-blame.nvim",
-    event = "VeryLazy",
-    config = function()
-	-- включить сразу при старте
-	vim.g.gitblame_enabled = 1
-
-	-- шаблон сообщения
-	vim.g.gitblame_message_template = " <summary> • <date> • <author> • <<sha>>"
-
-	-- формат даты
-	vim.g.gitblame_date_format = "%m-%d-%Y %H:%M:%S"
-
-	-- колонка для виртуального текста (1 = сразу после кода)
-	vim.g.gitblame_virtual_text_column = 1
-    end,
-  },
   {
     "mfussenegger/nvim-lint",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
       require "configs.lint"
+    end,
+  },
+
+  -- Автодополнение: докручиваем cmp поверх NvChad'а (см. configs/cmp.lua).
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = { "hrsh7th/cmp-nvim-lsp-signature-help" },
+    opts = function(plugin, opts)
+      return require "configs.cmp"(plugin, opts)
     end,
   },
 
@@ -91,7 +87,7 @@ return {
     "linux-cultist/venv-selector.nvim",
     ft = { "python" },
     dependencies = {
-      "neovim/nvim-lspconfig",
+      "neovim/nvim-lspconfig", 
       "nvim-telescope/telescope.nvim",
       "mfussenegger/nvim-dap-python"
     },
@@ -118,14 +114,14 @@ return {
         "cmake-language-server",
         "kotlin-language-server",
         "sourcekit-lsp",  -- Swift LSP
-        "pyright",  -- Python LSP
-
+        "basedpyright",  -- Python LSP (форк pyright с индексом stdlib для авто-импорта)
+        
         -- Formatters
         "stylua",
         "prettier",
         "shfmt",  -- Shell formatter
         "black",   -- Python formatter
-
+        
         -- Linters
         "shellcheck",
         "hadolint",  -- Dockerfile linter
@@ -136,6 +132,9 @@ return {
         "actionlint",  -- GitHub Actions linter
         "ktlint",  -- Kotlin linter
         "flake8",  -- Python linter
+
+        -- Debug adapters
+        "codelldb",  -- Rust/C/C++ (подхватывается rustaceanvim автоматически)
       },
     },
   },
@@ -163,8 +162,10 @@ return {
         "python",
         "swift",
         "kotlin",
+        "rust",
+        "toml",
+        "ron",
       },
     },
   },
 }
-

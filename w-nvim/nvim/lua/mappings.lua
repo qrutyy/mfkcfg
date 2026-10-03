@@ -33,7 +33,6 @@ map("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
 
 -- YAML schema selection
 map("n", "<leader>ys", "<cmd>Telescope yaml_schema<cr>", { desc = "YAML schema" })
-map('n', '<leader>gb', ':GitBlameToggle<CR>', { noremap = true, silent = true })
 
 -- LSP-based definitions
 vim.keymap.set("n", "<leader>fd", telescope.lsp_definitions, { desc = "LSP Definitions" })
@@ -63,7 +62,7 @@ map("n", "gR", function()
     search_dirs = {
       vim.fn.getcwd(),
       "/usr/src/linux-headers-" .. vim.fn.system("uname -r"):gsub("\n", ""),
-      "/home/mikhail/linux-6.16",
+      "/home/mikhail/linux-6.19",
     }
   })
 end, { desc = "RG References (fallback)" })
@@ -73,7 +72,7 @@ end, { desc = "RG References (fallback)" })
 vim.keymap.set("n", "<leader>fk", function()
   telescope.live_grep({
     prompt_title = "Linux kernel search",
-    search_dirs = { "/home/mikhail/linux-6.16/" },
+    search_dirs = { "/home/mikhail/linux/linux-6.19/" },
     path_display = { "smart" },
     glob_pattern = { "*.c", "*.h", "Makefile", "Kconfig" },
   })
@@ -86,12 +85,10 @@ map("n", "<leader>gk", function()
   require("telescope.builtin").grep_string({
     search = word,
     prompt_title = "Kernel Definition Search: " .. word,
-    search_dirs = { "/home/mikhail/linux-6.16/" }, -- Ваш путь к ядру
+    search_dirs = { "/home/mikhail/linux/linux-6.19/" }, -- Ваш путь к ядру
     path_display = { "smart" },
     -- Опционально: искать только в .c и .h
     glob_pattern = { "*.c", "*.h" },
   })
 end, { desc = "Search definition in Kernel (Grep)" })
 
--- Альтернативный вариант для Kernel Definition, если есть теги (tags)
--- map("n", "<leader>gt", "<cmd>Telescope tags search_dirs={'/home/mikhail/linux-6.16/'}<cr>", { desc = "Search tags in Kernel" })

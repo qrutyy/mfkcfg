@@ -7,6 +7,7 @@ local M = {}
 
 M.base46 = {
 	theme = "nano-light",
+	integrations = { "flash", "diffview", "neogit", "trouble" },
 
 	-- hl_override = {
 	-- 	Comment = { italic = true },
