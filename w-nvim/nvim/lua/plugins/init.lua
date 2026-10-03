@@ -17,26 +17,23 @@ return {
     -- mappings = { run = { keys = "<leader>cp" }, next = { keys = "]m" }, prev = { keys = "[m" } }
   },
   config = function(_, opts)
+    -- This repo is an out-of-tree kernel module, not a full Linux kernel
+    -- source tree, so checkpatch.pl's own tree sanity check always fails
+    -- and it silently produces no output unless --no-tree is passed.
+    -- Seed the plugin's persisted run config so every run (manual and
+    -- BufWritePost auto-run) defaults to --no-tree.
+    if type(vim.g.checkpatch_last_cfg) ~= "table" then
+      vim.g.checkpatch_last_cfg = {
+        strict = false,
+        codespell = false,
+        log = false,
+        no_tree = true,
+        quiet = false,
+      }
+    end
     require("plugins.checkpatch").setup(opts)
   end,
 },
- {
-    "f-person/git-blame.nvim",
-    event = "VeryLazy",
-    config = function()
-	-- включить сразу при старте
-	vim.g.gitblame_enabled = 1
-
-	-- шаблон сообщения
-	vim.g.gitblame_message_template = " <summary> • <date> • <author> • <<sha>>"
-
-	-- формат даты
-	vim.g.gitblame_date_format = "%m-%d-%Y %H:%M:%S"
-
-	-- колонка для виртуального текста (1 = сразу после кода)
-	vim.g.gitblame_virtual_text_column = 1
-    end,
-  },  
   {
     "mfussenegger/nvim-lint",
     event = { "BufReadPre", "BufNewFile" },
@@ -47,6 +44,8 @@ return {
 
   {
     "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = { "nvim-telescope/telescope.nvim" },
     config = function()
       require("nvchad.configs.lspconfig").defaults()
       require "configs.lspconfig"

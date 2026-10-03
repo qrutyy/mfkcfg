@@ -17,11 +17,20 @@ local options = {
     kotlin = { "ktlint" },
   },
 
-  format_on_save = {
-    -- These options will be passed to conform.format()
-    timeout_ms = 500,
-    lsp_fallback = true,
-  },
+  format_on_save = function(bufnr)
+    -- lsp_fallback would otherwise silently run clangd's formatter (default
+    -- clang-format style) on every C/C++ save. This codebase follows kernel
+    -- style enforced by checkpatch, not clang-format's defaults, and letting
+    -- clangd reflow the file on save can shift line numbers out from under
+    -- you and even drop blank lines. Only auto-format filetypes that have an
+    -- explicit formatter above; leave C/C++ alone (use <leader>f to format
+    -- deliberately if you ever want to).
+    local ft = vim.bo[bufnr].filetype
+    if ft == "c" or ft == "cpp" then
+      return nil
+    end
+    return { timeout_ms = 500, lsp_fallback = true }
+  end,
 
   formatters = {
     shfmt = {

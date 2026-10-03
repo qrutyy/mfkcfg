@@ -45,3 +45,5 @@ require("ibl").setup()
 vim.schedule(function()
   require "mappings"
 end)
+
+require("kernel").setup()
