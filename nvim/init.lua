@@ -1,6 +1,7 @@
 -- ~/.config/nvim/init.lua
 vim.g.base46_cache = vim.fn.stdpath "data" .. "/base46/"
 vim.g.mapleader = " "
+vim.opt.clipboard = "unnamedplus"
 
 -- bootstrap lazy and all plugins
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
@@ -37,7 +38,7 @@ dofile(vim.g.base46_cache .. "defaults")
 dofile(vim.g.base46_cache .. "statusline")
 
 require "options"
-require "nvchad.autocmds"
+require "autocmds"
 
 require("ibl").setup()
 
@@ -45,3 +46,11 @@ require("ibl").setup()
 vim.schedule(function()
   require "mappings"
 end)
+
+-- Сессии: по одной на рабочий каталог, восстановление руками (:SessionRestore).
+-- Выстави = true, если хочешь автоматическое восстановление сессии текущего
+-- каталога при запуске "nvim" без аргументов.
+vim.g.auto_restore_session = false
+require("session").setup()
+
+require("kernel").setup()

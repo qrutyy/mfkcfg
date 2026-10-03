@@ -11,5 +11,3 @@ vim.o.smarttab = true
 -- Additional options here if needed
 -- vim.o.relativenumber = true
 -- vim.o.number = true
-
-require "nvchad.options"

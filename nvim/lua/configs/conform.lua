@@ -17,11 +17,14 @@ local options = {
     kotlin = { "ktlint" },
   },
 
-  format_on_save = {
-    -- These options will be passed to conform.format()
-    timeout_ms = 500,
-    lsp_fallback = true,
-  },
+  -- C/C++ на сохранении не трогаем: clangd переформатирует ядерный код
+  -- под LLVM-стиль, если рядом нет .clang-format. Руками — <leader>f.
+  format_on_save = function(bufnr)
+    if vim.tbl_contains({ "c", "cpp" }, vim.bo[bufnr].filetype) then
+      return nil
+    end
+    return { timeout_ms = 500, lsp_format = "fallback" }
+  end,
 
   formatters = {
     shfmt = {
